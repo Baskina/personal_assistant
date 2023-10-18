@@ -4,6 +4,7 @@ import pickle
 from .file_config import FILE_NOTES
 
 
+
 class Field:
     def __init__(self, value):
         self.value = value
