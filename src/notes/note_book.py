@@ -1,7 +1,7 @@
 from collections import UserList
 import pickle
 
-from .file_config import FILE_NOTES
+from file_config import FILE_NOTES
 
 
 
