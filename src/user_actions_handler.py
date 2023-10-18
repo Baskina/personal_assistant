@@ -19,12 +19,7 @@ book = get_book()
 
 
 def get_notes():
-    try:
-        with open(FILE_NOTES, "rb") as fh:
-            unpacked = pickle.loads(fh.read())
-            return unpacked
-    except FileNotFoundError:
-        return note_book.NoteBook()
+    return note_book.NoteBook()
 
 
 notes = get_notes()
@@ -63,140 +58,125 @@ def handler_sort(dir_path):
 
     return "Done!"
 
-    
+
 @input_error
 def handler_add_note(data):
-    
-     tags = []
-     new_data = data
-     for i in data:
-         if '#' in i:
-             
-             tags.append(i)
-             
-             
-     for i in new_data:
-         for j in tags:
-             if j == i:
-                 new_data.remove(i)     
+    tags = []
+    new_data = data
+    for i in data:
+        if '#' in i:
+            tags.append(i)
 
-    
-     if tags:
-         
-         
-         for i in new_data:
+    for i in new_data:
+        for j in tags:
+            if j == i:
+                new_data.remove(i)
+
+    if tags:
+
+        for i in new_data:
             for j in tags:
                 if j == i:
                     new_data.remove(i)
-         text = ' '.join(new_data)
-     else:
-         text = data
+        text = ' '.join(new_data)
+    else:
+        text = ' '.join(data)
 
+    if tags:
 
-
-     if tags:
-        
         n = note_book.Note(text, tags)
-        
-        globals.note.add_note(n)
+
+        notes.add_note(n)
 
         print(f'Note has been added successfully:')
-        for i in globals.note.data.values():
+        for i in notes.data.values():
             if type(i) == list:
                 for j in i:
                     print(str(j))
             print(str(i))
 
-
-        
         return '>>>'
-     
-     else:
+
+    else:
         n = note_book.Note(text)
-        
-        globals.note.add_note(n)
+        notes.add_note(n)
 
         print(f'Note has been added successfully:')
-        for i in globals.note.data.values():
+        for i in notes.data.values():
             if type(i) == list:
                 for j in i:
                     print(str(j))
             print(str(i))
         return '>>>'
+
 
 @input_error
 def handler_add_tag(data):
-    globals.note.add_tag(data[1], data[2])
+    notes.add_tag(data[1], data[2])
     print(f'Tag has been added successfully:')
-    for i in globals.note.data.values():
+    for i in notes.data.values():
         if type(i) == list:
-            
+
             for j in i:
                 print(str(j))
         print(str(i))
     return '>>>'
-    
 
-@input_error    
+
+@input_error
 def handler_edit_title(data):
-    globals.note.edit_title(data[0], data[1])
+    notes.edit_title(data[0], data[1])
     print(f'Tag has been added successfully:')
-    for i in globals.note.data.values():
+    for i in notes.data.values():
         if type(i) == list:
-            
+
             for j in i:
                 print(str(j))
         print(str(i))
     return '>>>'
-  
 
-    
-@input_error    
+
+@input_error
 def handler_edit_text(data):
-    globals.note.edit_text(data[0], data[1])
+    notes.edit_text(data[0], data[1])
     print(f'Tag has been added successfully:')
-    for i in globals.note.data.values():
+    for i in notes.data.values():
         if type(i) == list:
             print('here')
             for j in i:
                 print(str(j))
         print(str(i))
     return '>>>'
-    
 
-@input_error 
+
+@input_error
 def handler_sort_note(*args):
     print('Start sorting')
-   
-    return print(globals.note.sort_note())
+
+    return print(notes.sort_note())
+
 
 @input_error
 def handler_find_note(data):
     lst = []
-   
-    for i in data: 
-        lst.append(globals.note.find_note(i))
+
+    for i in data:
+        lst.append(notes.find_note(i))
     return '\n'.join(lst)
 
 
 @input_error
 def handler_delete_note(data):
     for i in data:
-        globals.note.delete_note(i)
+        notes.delete_note(i)
     print(f'Note(s) has been deleted successfully. Remained notes:')
-    for i in globals.note.data.values():
+    for i in notes.data.values():
         if type(i) == list:
             for j in i:
                 print(str(j))
 
         print(str(i))
     return '>>>'
-        
-       
-
-
-
-
 
 
 @input_error
@@ -228,7 +208,7 @@ def handler_show_all(input):
     if len(name) > 0:
         return out
     else:
-        return "Contact list is empty"    
+        return "Contact list is empty"
 
 
 @input_error
@@ -286,7 +266,7 @@ def handler_delete_contact(input):
     return f"Contact {name} deleted"
 
 
-def name_splitter(input:list) -> tuple:
+def name_splitter(input: list) -> tuple:
     '''function to check if contact in addressbook, and handle single name / firstname, surname'''
     if len(input) == 1:
         name = input[0]
@@ -294,7 +274,7 @@ def name_splitter(input:list) -> tuple:
             raise ContactNotFoundError
         return name
     elif len(input) == 2:
-        #can be only name, surname OR name, argument
+        # can be only name, surname OR name, argument
         name, arg = input
         long_name = f"{name.lower()}, {arg.lower()}"
         if book.get(name.lower(), None):
@@ -309,6 +289,7 @@ def name_splitter(input:list) -> tuple:
         if not book.get(name.lower(), None):
             raise ContactNotFoundError
     return name, arg
+
 
 def get_handler(operator):
     return OPERATORS[operator]
@@ -328,7 +309,7 @@ OPERATORS = {
     'sort note': handler_sort_note,
     'find note': handler_find_note,
     'delete note': handler_delete_note,
-    'add note tag': handler_add_tag,
+    'add notetag': handler_add_tag,
     "help": handler_help,
     "show all": handler_show_all,
     "add phone": handler_add_phone,

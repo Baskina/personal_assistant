@@ -17,8 +17,6 @@ def main():
                 handler = get_handler(command)
                 result = handler(data)
                 print(result)
-                with open(FILE_NOTES, "wb") as fh:
-                    fh.write(pickle.dumps(notes))
                 continue
             except AttributeError:
                 print(f'{TYPE_OR_ATTRIBUTE_ERROR_MESSAGE} \n{get_handler("help")()}')
