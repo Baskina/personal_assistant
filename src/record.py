@@ -41,7 +41,7 @@ class Birthday(Field):
         if birthday is None:
             self.birthday = birthday
         else:
-            birthday = ''.join(filter(str.isdigit, birthday))
+            birthday = "".join(filter(str.isdigit, birthday))
             if len(birthday) == 6:
                 dt_bd = datetime.strptime(birthday, "%d%m%y")
                 self.birthday = dt_bd
@@ -49,19 +49,18 @@ class Birthday(Field):
                 dt_bd = datetime.strptime(birthday, "%d%m%Y")
                 self.birthday = dt_bd
             else:
-                raise ValueError(
-                    "Date should be in format dd/mm/yy or dd/mm/yyyy")
+                raise ValueError("Date should be in format dd/mm/yy or dd/mm/yyyy")
 
     def __str__(self):
         if self.birthday is None:
-            return "\"\""
+            return '""'
         else:
             return str(self.birthday.date())
 
 
 class Phone(Field):
     def __init__(self, value: str) -> None:
-        value = ''.join(filter(str.isdigit, value))
+        value = "".join(filter(str.isdigit, value))
         if len(value) == 10:
             self.value = value
         elif len(value) == 8:
@@ -110,7 +109,7 @@ class Record:
                 self.add_phone(new_phone)
                 return self
         raise ValueError
-    
+
     def edit_birthday(self, birthday):
         self.birthday = Birthday(birthday)
 
@@ -123,16 +122,17 @@ class Record:
         next_birthday = birthday.replace(year=current_year)
 
         if next_birthday < today_date:
-            next_birthday = birthday.replace(year=current_year+1)
+            next_birthday = birthday.replace(year=current_year + 1)
         days_to_bd = next_birthday - today_date
 
         return days_to_bd.days
-    
+
 
 class NotebookTitle(Field):
-    def __init__(self, user_input:str):
+    def __init__(self, user_input: str):
         text = [item for item in user_input if not item.startswith("#")]
         self.value = " ".join(text)
+
 
 class NotebookNote(Field):
     def __init__(self, user_input=""):
@@ -149,23 +149,24 @@ class NotebookTags(Field):
 
     def __str__(self):
         return ", ".join(self.value)
-    
-    def add_tag(self, tag:str):
+
+    def add_tag(self, tag: str):
         self.value.append(tag)
-    
+
     def tags_to_list(self):
         return self.value
+
 
 class Note:
     def __init__(self, user_input):
         self.title = NotebookTitle(user_input)
         self.tags = NotebookTags()
         self.note = NotebookNote()
-    
+
     def __str__(self):
         return f"Title: {self.title}\nContents: {self.note}\nTags: {self.tags}"
-    
-    def add_tag(self, user_input:list):
+
+    def add_tag(self, user_input: list):
         tags = [item for item in user_input if item.startswith("#")]
         if tags:
             for tag in tags:

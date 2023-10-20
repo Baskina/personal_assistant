@@ -5,7 +5,6 @@ from src.record import Note
 from src.file_config import FILE_NOTES
 
 
-
 class NoteBook(UserDict):
     def __init__(self):
         try:
@@ -26,7 +25,6 @@ class NoteBook(UserDict):
             out += f"{d}\n"
         return out
 
-    
     def save(self):
         with open(FILE_NOTES, "wb") as fh:
             pickle.dump(self.data, fh)
@@ -34,8 +32,8 @@ class NoteBook(UserDict):
     def add_note(self, title: str) -> str:
         new_note = Note(title)
         self.data.update({new_note.title.value: new_note})
-        return f"Sucsessfully added new note with title:\n{new_note}"
-        
+        return f"Successfully added new note with title:\n{new_note}"
+
     def show_all_notes(self):
         out = []
         for item in self.data:
@@ -45,12 +43,11 @@ class NoteBook(UserDict):
     def find_note(self, name: str) -> Note:
         return self.data.get(name, None)
 
-    def delete_note(self, name:str):
+    def delete_note(self, name: str):
         if self.data.get(name, None):
             del self.data[name]
         else:
             return
-
 
     # def find_all(self, input: str) -> list:
     #     input = input.lower()
@@ -62,8 +59,6 @@ class NoteBook(UserDict):
     #             if input in str(single_phone) and contact.name not in find_result:
     #                 find_result.append(contact.name)
     #     return find_result
-
-
 
     # def iterator(self, n=5):
     #     counter = 0
