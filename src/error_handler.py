@@ -1,6 +1,6 @@
 import zipfile
 
-from src.utils.constants import BOT_COMMANDS
+from utils.constants import BOT_COMMANDS
 
 
 class EmptyPhoneNumberError(Exception):

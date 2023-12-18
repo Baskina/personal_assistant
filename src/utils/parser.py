@@ -1,6 +1,6 @@
 import difflib
 
-from src.utils.constants import BOT_COMMANDS
+from .constants import BOT_COMMANDS
 
 
 def parser(line):
